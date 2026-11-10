@@ -1,0 +1,27 @@
+generator client {
+  provider = "prisma-client-js"
+}
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model Prompt {
+  id String @id @default(cuid())
+  slug String @unique
+  title String
+  summary String
+  content String @db.Text
+  category String
+  subcategory String?
+  tags String[]
+  technologies String[]
+  level String
+  status String @default("DRAFT")
+  qualityScore Int @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  publishedAt DateTime?
+  @@index([status, publishedAt])
+  @@index([category, subcategory])
+  @@index([updatedAt])
+}
